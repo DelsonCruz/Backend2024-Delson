@@ -1,0 +1,113 @@
+import crypto from 'crypto'
+
+// const hexValue = crypto.randomBytes(10).toString('hex');
+// const decimalValue = Math.abs(parseInt(hexValue, 16));
+// console.log(decimalValue);
+
+
+// console.log(parseInt(crypto.randomBytes(10).toString('hex'), 16));
+
+console.log(crypto.randomBytes(10).toString('hex'))
+class ProductManager {
+    constructor() {
+        this.products = []
+    }
+
+       
+
+    addProduct(producto) {
+        //VALIDAR QUE TODOS LOS DATOS SE HAYAN INGRESADO
+        //const indice = this.products.findIndex(prod = prod.code === producto.code)
+        
+        this.NombreProducto = NombreProducto;
+        this.Descripcion = Descripcion;
+        this.Precio = Precio;
+        this.Imagen = Imagen;
+        this.Codigo = Codigo;
+        this.StockInventario = StockInventario;
+
+        // para simplificar la presentacion de todos los datos y poderlos presentar y llevar hacia otras (simplificar el console.log) se puede usar:
+        //this.verInfo = `El nombre del producto es: ${this.NombreProducto}, tiene precio de $: ${this.Precio} como se presenta acontinuacion ${this.Imagen} con el codigo ${this.Codigo} y su cantidad en Stock es: ${this.StockInventario}`;
+
+        rl.question(
+            'Ingresa Nombre del Producto: <br>', 
+            'Ingresa  Descripcion: <br>',
+            'Ingresa  Precio: <br>',
+            'Ingresa  Imagen: <br>',
+            'Ingresa  Codigo: <br>',
+                        (NombreProducto,Descripcion,Precio,Imagen,Codigo,StockInventario) => {
+            console.log(
+                
+                `Ingreso Producto: ${NombreProducto} <br>`, 
+                `Ingreso Descripcion: ${Descripcion} <br>`,
+                `Ingreso Precio: ${Precio} <br>`,
+                `Ingreso Imagen: ${Imagen} <br>`,
+                `Ingreso Codigo: ${Codigo} <br>`,
+                `Ingreso StockInventario: ${StockInventario} <br>`
+                );
+
+            rl.close();
+          });
+
+        
+
+        const existe = this.products.includes(prod => prod.code === producto.code)
+
+        //EXISTE este producto en el array
+        if (existe) {
+            return "Producto ya existente"
+        } else {
+            producto.id = (crypto.randomBytes(10).toString('hex'), 16);
+            this.products.push(producto)
+        }
+
+        
+
+
+    }
+    getProducts(MostrarProductos){
+        const productosIngresados = this.products.filter(prod => prod.code === producto.code);
+        console.log(productosIngresados);
+    }
+
+    getProductsByID(MostrarCodigoProducto){
+        const busquedaCodigo = [];
+        const existeCodigo = codigoBusqueda.some(code => this.products.some(prod => prod.code === code));
+        console.log(busquedaCodigo);
+                
+    }
+    updateProducts(){
+        const actualizarProducto = this.products.findIndex(prod => prod.code === producto.code);
+
+    if (actualizarProducto !== -1) {
+    
+    this.products[actualizarProducto].NombreProducto = `El nuevo nombre del producto es: ${this.NombreProducto}<br>`   
+    this.products[actualizarProducto].Precio = `tiene precio de $: ${this.Precio}<br>`;
+    this.products[actualizarProducto].Imagen = `como se presenta acontinuacion ${this.Imagen}<br>`
+    this.products[actualizarProducto].Codigo =`con el codigo ${this.Codigo}<br>` 
+    this.products[actualizarProducto].StockInventario = `y su cantidad en Stock es: ${this.StockInventario}`;
+    
+
+    
+    producto = this.products[actualizarProducto];} 
+    else {
+    console.log("Producto no encontrado");
+}
+}
+}
+
+// title(nombre del producto)
+// description(descripcion del producto)
+// price(precio)
+// thumbnail(ruta de imagen)
+// code(codigo)
+// stock (numero de piezas disponibles)
+let NombreProducto,
+ Descripcion,
+ Precio,
+ Imagen,
+ Codigo,
+ StockInventario;
+
+    const addProduct = new ProductManager (NombreProducto,Descripcion,Precio,Imagen,Codigo,StockInventario);
+    // console.log(addProduct)
