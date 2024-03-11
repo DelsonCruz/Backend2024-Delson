@@ -4,7 +4,6 @@ import productsRouter from './routes/productsRouter.js'
 import userRouter from './routes/userRouter.js'
 import chatRouter from './routes/chatRouter.js'
 import upload from './config/multer.js'
-// se importa mongoose para poder realizar la consulta del carro y los productos en la BD
 import mongoose from 'mongoose'
 import messageModel from './models/messages.js'
 import { Server } from 'socket.io'
@@ -22,19 +21,11 @@ const server = app.listen(PORT, () => {
 
 const io = new Server(server)
 
-// conexion a la base de datos
-// delsong91:<password> = contraseña del servidor
-// mongodb+srv://delsong91:<password>@cluster0.covmyfh.mongodb.net/
 
-// mongoose.connect("mongodb+srv://delsong91:@cluster0.by94px6.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
-
-mongoose.connect("mongodb+srv://delsong91:@cluster0.covmyfh.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
+mongoose.connect("mongodb+srv://delsong91:<password>@cluster0.covmyfh.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
 
 
-
-// cuando envie la informacion enviar mensaje que el servidor si conecto
 .then(() => console.log("DB esta online"))
-// 
 .catch(e => console.log(e))
 
 //Middlewares
@@ -44,17 +35,13 @@ app.set('view engine', 'handlebars')
 app.set('views', __dirname + '/views')
 
 
-// const mensajes = []
+
 io.on('connection', (socket) => {
     console.log("Conexion con Socket.io")
 
-    // devuelve todos los mensajes que emita la base de datos del carrito
-    // incluso los que muestren error de acuerdo al modelo
+  
     socket.on('mensaje', async (mensaje) => {
-    // socket.on('mensaje', async (info) => {
-    // console.log(info)
-    // mensajes.push(info)
-    
+  
         try{
             await messageModel.create(mensaje)
             const mensajes = await messageModel.find()
