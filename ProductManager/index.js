@@ -26,11 +26,11 @@ const io = new Server(server)
 // delsong91:<password> = contraseña del servidor
 // mongodb+srv://delsong91:<password>@cluster0.covmyfh.mongodb.net/
 
-// mongoose.connect("mongodb+srv://delsong91:Cruzmongo92+@cluster0.by94px6.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
+// mongoose.connect("mongodb+srv://delsong91:@cluster0.by94px6.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
 
-mongoose.connect("mongodb+srv://delsong91:Cruzmongo92+@cluster0.covmyfh.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
+mongoose.connect("mongodb+srv://delsong91:@cluster0.covmyfh.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
 
-// mongoose.connect("mongodb+srv://delsong91:Cruzmongo92+@cluster0.covmyfh.mongodb.net/");
+
 
 // cuando envie la informacion enviar mensaje que el servidor si conecto
 .then(() => console.log("DB esta online"))
