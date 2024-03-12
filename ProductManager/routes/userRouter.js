@@ -9,7 +9,7 @@ userRouter.get('/', async (req, res) => {
         res.status(200).send(users)
     } catch (e) {
         // res.status(500).send("Error al consultar users: ", e)
-        res.status(500).send({e : "Error al crear users: "})
+        res.status(500).send({e : "Error al consultar users: "})
     }
 })
 
