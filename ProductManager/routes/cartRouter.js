@@ -51,56 +51,30 @@ cartRouter.post('/:cid/:pid', async (req, res) => {
     }
 })
 
-export default cartRouter
 
 
+// Ruta para eliminar un producto específico de un carrito
+router.delete('/cartRouter/:cid/productos/:pid', async (req, res) => {
+    const { cid, pid } = req.params;
 
-
-/*
-const cartRouter = Router()
-
- 
-// cartRouter.post('/:pid', async (req, res) => {
-    cartRouter.post('cid/:pid', async (req, res) => {
-        try {
-            const cartId = req.params.cid
-            const productId = req.params.pid
-            const { quantity } = req.body
-            const cart = await cartModel.findById(cartId)
-    
-            const indice = cart.products.findIndex(product => product.id == productId)
-    
-            if (indice != -1){
-                cart[indice].quantity += quantity
-            }else{
-                cart.products.push({id: productId, quantity: quantity})
-            }
-            
-            // actualizar el arreglo
-    
-            const mensaje = await cartModel.findByIdAndUpdate(cartId, cart)
-    
-            // const mensaje = await cartManager.addProductByCart(productId, quantity)
-            res.status(200).send(mensaje)
-        } catch (error) {
-            res.status(500).send(`Error interno del servidor al crear producto: ${error}`)
-        }
-    })
-
-    cartRouter.get('/:id', async (req, res) => {
-// cartRouter.get('/', async (req, res) => {
     try {
-        
-        const cartId = req.params.id
-        const cart = await cartModel.findById(cartId)
+        const cart = await cartModel.findById(cid);
 
-        // const cart = await cartManager.getCart()
-        res.status(200).send(cart)
+        if (!cart) {
+            return res.status(404).json({ error: "Carrito no encontrado" });
+        }
+
+        // Filtrar y eliminar el producto del carrito
+        cart.productos = cart.productos.filter(producto => producto._id.toString() !== pid);
+
+        await cart.save();
+
+        res.status(200).json({ message: "Producto eliminado del carrito exitosamente" });
     } catch (error) {
-        res.status(500).send(`Error interno del servidor al consultar carrito: ${error}`)
+        console.error("Error al eliminar producto del carrito:", error);
+        res.status(500).json({ error: "Error interno del servidor" });
     }
-})
+});
 
- */
 
-// export default cartRouter
+export default cartRouter
