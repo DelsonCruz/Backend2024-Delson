@@ -1,12 +1,5 @@
 import { Router } from "express";
 import cartModel from "../models/cart.js";
-// import messageModel from "../models/messages";
-// import { CartManager } from "../config/CartManager.js";
-// const cartManager = new CartManager('./src/data/cart.json')
-
-
-// import { Router } from "express";
-// import cartModel from "../models/cart.js";
 
 const cartRouter = Router()
 
@@ -15,7 +8,7 @@ cartRouter.post('/', async (req, res) => {
         const mensaje = await cartModel.create({ products: [] })
         res.status(201).send(mensaje)
     } catch (e) {
-        res.status(500).send(`Error interno del servidor al crear carrito: ${error}`)
+        res.status(500).send(`Error interno del servidor al crear carrito: ${e}`)
     }
 })
 
@@ -24,8 +17,8 @@ cartRouter.get('/:cid', async (req, res) => {
         const cartId = req.params.cid
         const cart = await cartModel.findById(cartId)
         res.status(200).send(cart)
-    } catch (error) {
-        res.status(500).send(`Error interno del servidor al consultar carrito: ${error}`)
+    } catch (e) {
+        res.status(500).send(`Error interno del servidor al consultar carrito: ${e}`)
     }
 })
 
@@ -46,35 +39,68 @@ cartRouter.post('/:cid/:pid', async (req, res) => {
         }
         const mensaje = await cartModel.findByIdAndUpdate(cartId, cart)
         res.status(200).send(mensaje)
-    } catch (error) {
-        res.status(500).send(`Error interno del servidor al crear producto: ${error}`)
+    } catch (e) {
+        res.status(500).send(`Error interno del servidor al crear producto: ${e}`)
+    }
+})
+
+
+cartRouter.delete('/:cid/:pid', async (req, res) => {
+    // const { cid, pid } = req.params;
+    try {
+        const cartId = req.params.cid
+        // const { quantity } = req.body
+        
+        const mensaje = await cartModel.findByIdAndDelete(cartId)
+
+        
+        if (mensaje == "Producto eliminado correctamente")
+            res.status(200).send(mensaje)
+        else
+            res.status(404).send(mensaje)
+    } catch (e) {
+        res.status(500).send(`Error interno del servidor al eliminar elemento: ${e}`)
     }
 })
 
 
 
-// Ruta para eliminar un producto específico de un carrito
-router.delete('/cartRouter/:cid/productos/:pid', async (req, res) => {
-    const { cid, pid } = req.params;
 
+cartRouter.put('/:cid', async (req, res) => {
     try {
-        const cart = await cartModel.findById(cid);
-
-        if (!cart) {
-            return res.status(404).json({ error: "Carrito no encontrado" });
-        }
-
-        // Filtrar y eliminar el producto del carrito
-        cart.productos = cart.productos.filter(producto => producto._id.toString() !== pid);
-
-        await cart.save();
-
-        res.status(200).json({ message: "Producto eliminado del carrito exitosamente" });
+        const cartId = req.params.pid
+        const updateCart = req.body
+        const mensaje = await cartModel.findByIdAndUpdate(cartId,updateCart)
+        
+        if (mensaje == "Producto actualizado correctamente")
+            res.status(200).send(mensaje)
+        else
+            res.status(404).send(mensaje)
     } catch (error) {
-        console.error("Error al eliminar producto del carrito:", error);
-        res.status(500).json({ error: "Error interno del servidor" });
+        res.status(500).send(`Error interno del servidor al actualizar producto: ${error}`)
     }
-});
+})
 
+cartRouter.put('/:cid/:pid', async (req, res) => {
+    try {
+        const cartId = req.params.cid
+        const updateCart = req.params.pid
+        const { quantity } = req.body
+        const cart = await cartModel.findById(cartId)
+
+        const indice = cart.products.findIndex(product => product.id_prod == updateCart)
+
+        if (indice != -1) {
+            //Consultar Stock para ver cantidades
+            cart.products[indice].quantity = quantity //5 + 5 = 10, asigno 10 a quantity
+        } else {
+            cart.products.push({ id_prod: cartId, quantity: quantity })
+        }
+        const mensaje = await cartModel.findByIdAndUpdate(cartId, cart)
+        res.status(200).send(mensaje)
+    } catch (e) {
+        res.status(500).send(`Error interno del servidor al crear producto: ${e}`)
+    }
+})
 
 export default cartRouter
