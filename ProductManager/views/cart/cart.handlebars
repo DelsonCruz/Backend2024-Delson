@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart</title>
+</head>
+<body>
+
+    <h1>Carrito</h1>
+
+{{#if items}}
+{{#each items}}
+
+{{/if}}
+    <h1>Shopping Cart</h1>
+    <ul>
+        
+        <li>{{this.name}} - ${{this.price}}</li>
+        {{/each}}
+    </ul>
+    
+<div>
+    <p>Titulo: {{this.title}}</p>
+    <p>Descripcion: {{this.description}}</p>
+    <p>Precio: {{this.price}}</p>
+    <p>Stock: {{this.stock}}</p>
+    <p>Precio Total: ${{total.price}}</p>
+    
+    {{!-- IMAGENES CARRITO --}}
+    <img src="{{this.https://github.com/DelsonCruz/Backend2024-Delson/blob/main/ProductManager/public/img/cel1.jpg}}" 
+    alt="{{this.name}}" style="width: 100px; height: 100px;">{{this.name}}
+    <img src="{{this.https://github.com/DelsonCruz/Backend2024-Delson/blob/main/ProductManager/public/img/cel2.jpg}}" 
+    alt="{{this.name}}" style="width: 100px; height: 100px;">{{this.name}}
+    {{!-- <img src="../../public/img/{{this.img}}" alt="Imagen de {{this.title}}"> --}}
+</div>
+{{/each}}
+{{else}}
+<p>No se pueden mostrar los elementos</p>
+
+</body>
+</html>
