@@ -1,25 +1,26 @@
 import express from 'express'
-import cartRouter from './routes/cartRouter.js'
-import productsRouter from './routes/productsRouter.js'
-import userRouter from './routes/userRouter.js'
-import chatRouter from './routes/chatRouter.js'
 import upload from './config/multer.js'
 import mongoose from 'mongoose'
 import messageModel from './models/messages.js'
 import indexRouter from './routes/indexRouter.js'
 import cookieParser from 'cookie-parser'
+import loginRouter from './routes/loginRouter.js'
 import { Server } from 'socket.io'
 import { engine } from 'express-handlebars'
 import { __dirname } from './path.js'
 
 //Configuraciones o declaraciones
-const app = express()
-const PORT = 8000
+const app = express();
+const PORT = 8000;
 
 //Server
 const server = app.listen(PORT, () => {
     console.log(`Server on port ${PORT}`)
 })
+
+loginRouter.listen(PORT, () => {
+    console.log(`Login on port ${PORT}`)
+});
 
 const io = new Server(server)
 
