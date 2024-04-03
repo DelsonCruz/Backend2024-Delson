@@ -6,6 +6,8 @@ import chatRouter from './routes/chatRouter.js'
 import upload from './config/multer.js'
 import mongoose from 'mongoose'
 import messageModel from './models/messages.js'
+import indexRouter from './routes/indexRouter.js'
+import cookieParser from 'cookie-parser'
 import { Server } from 'socket.io'
 import { engine } from 'express-handlebars'
 import { __dirname } from './path.js'
@@ -30,9 +32,33 @@ mongoose.connect("mongodb+srv://delsong91:<password>@cluster0.covmyfh.mongodb.ne
 
 //Middlewares
 app.use(express.json())
+app.use(cookieParser())
+app.use('/', indexRouter);
+
 app.engine('handlebars', engine())
 app.set('view engine', 'handlebars')
 app.set('views', __dirname + '/views')
+
+
+// app.get('/getCookie', (req,res) => {
+//     res.cookie
+// })
+
+
+app.post('/login', (req, res) => {
+    const { username, password } = req.body;
+
+    // Aquí deberías verificar si el usuario y la contraseña son válidos
+    if (username === 'usuario' && password === 'contraseña') {
+        // Si la autenticación es exitosa, redirige a la página de inicio o a la página deseada
+        res.redirect('/home.handlebars');
+    } else {
+        // Si la autenticación falla, muestra un mensaje de error o redirige de vuelta al formulario de login
+        res.render('login', { error: 'Usuarios o contraseña inválidas' });
+    }
+});
+
+
 
 
 
@@ -56,12 +82,7 @@ io.on('connection', (socket) => {
 
 })
 
-//Routes
-app.use('/public', express.static(__dirname + '/public'))
-app.use('/api/products', productsRouter, express.static(__dirname + '/public'))
-app.use('/api/cart', cartRouter)
-app.use('/api/chat', chatRouter, express.static(__dirname + '/public'))
-app.use('/api/users', userRouter)
+
 
 app.post('/upload', upload.single('product'), (req, res) => {
     try {
