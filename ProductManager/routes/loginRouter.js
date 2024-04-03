@@ -1,22 +1,27 @@
 import express from 'express';
 import exphbs from 'express-handlebars';
+import { Server } from 'socket.io'
 
-const app = express();
+const loginRouter = express();
 const PORT = 8001;
 
-app.engine('handlebars', exphbs());
-app.set('view engine', 'handlebars');
+loginRouter.engine('handlebars', exphbs());
+loginRouter.set('view engine', 'handlebars');
 
 // Ruta para mostrar el formulario de login
-app.get('/login', (req, res) => {
+loginRouter.get('/login', (req, res) => {
     res.render('login');
 });
 
 // Ruta para manejar el envío del formulario de login
-app.post('/login', (req, res) => {
+loginRouter.post('/login', (req, res) => {
     // Aquí maneja la lógica de autenticación (ver punto 3)
 });
 
-app.listen(PORT, () => {
-    console.log('Servidor corriendo en el puerto 8001');
+
+loginRouter.listen(PORT, () => {
+    
 });
+
+
+export default loginRouter;
