@@ -13,14 +13,15 @@ import { __dirname } from './path.js'
 const app = express();
 const PORT = 8000;
 
+//Login
+loginRouter.listen(PORT, () => {
+    console.log(`Login on port ${PORT}`)
+});
+
 //Server
 const server = app.listen(PORT, () => {
     console.log(`Server on port ${PORT}`)
 })
-
-loginRouter.listen(PORT, () => {
-    console.log(`Login on port ${PORT}`)
-});
 
 const io = new Server(server)
 
