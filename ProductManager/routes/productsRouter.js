@@ -9,7 +9,13 @@ const productsRouter = Router()
 
 productsRouter.get('/', async (req, res) => {
     try {
-        const { limit } = req.query
+        const { limit, page, filter, sort } = req.query
+
+        const paginado = page != undefined ? page : 1;
+        const limitante = limit != undefined ? limit :10;
+        const ordenar = sort == 'asc' ? sort : 'desc';
+        
+
         // ya no se consulta con get, y aca devuelve la coleccion de productos 
         const prods = await productModel.find()
         // const prods = await productManager.getProducts()
@@ -93,4 +99,4 @@ productsRouter.delete('/:pid', async (req, res) => {
     }
 })
 
-export default productsRouter
+export default productsRouter;

@@ -13,15 +13,14 @@ import { __dirname } from './path.js'
 const app = express();
 const PORT = 8000;
 
-//Login
-loginRouter.listen(PORT, () => {
-    console.log(`Login on port ${PORT}`)
-});
-
 //Server
 const server = app.listen(PORT, () => {
     console.log(`Server on port ${PORT}`)
 })
+
+loginRouter.listen(PORT, () => {
+    console.log(`Login on port ${PORT}`)
+});
 
 const io = new Server(server)
 
@@ -36,10 +35,12 @@ mongoose.connect("mongodb+srv://delsong91:<password>@cluster0.covmyfh.mongodb.ne
 app.use(express.json())
 app.use(cookieParser())
 app.use('/', indexRouter);
+app.use(express.urlencoded({ extended: true }));
 
 app.engine('handlebars', engine())
 app.set('view engine', 'handlebars')
 app.set('views', __dirname + '/views')
+
 
 
 // app.get('/getCookie', (req,res) => {
@@ -60,6 +61,33 @@ app.post('/login', (req, res) => {
     }
 });
 
+
+
+
+// Ruta para mostrar el formulario de registro
+app.get('/register', (req, res) => {
+    res.render('register');
+});
+
+// Ruta para manejar el envío del formulario de registro
+app.post('/register', (req, res) => {
+    const { username, password } = req.body;
+
+    // Aquí creas el usuario en tu base de datos o en cualquier otra fuente de datos
+    
+    if (username === 'usuario' && password === 'contraseña') {
+        // Si la autenticación es exitosa, redirige a la página de inicio o a la página deseada
+        res.redirect('/home.handlebars');
+    }else {
+    res.redirect('/login'); // Redirigir al usuario al formulario de login despues de validar usuario
+        }
+});
+
+// Ruta para la página de inicio (home)
+app.get('/home', (req, res) => {
+    // Renderizar la página home
+    res.render('home');
+});
 
 
 
@@ -86,6 +114,8 @@ io.on('connection', (socket) => {
 
 
 
+
+
 app.post('/upload', upload.single('product'), (req, res) => {
     try {
         console.log(req.file)
@@ -94,3 +124,12 @@ app.post('/upload', upload.single('product'), (req, res) => {
         res.status(500).send("Error al cargar imagen")
     }
 })
+
+
+
+
+
+
+
+
+
