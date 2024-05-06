@@ -8,6 +8,7 @@ import loginRouter from './routes/loginRouter.js'
 import { Server } from 'socket.io'
 import { engine } from 'express-handlebars'
 import { __dirname } from './path.js'
+import { configDotenv } from 'dotenv'
 
 //Configuraciones o declaraciones
 const app = express();
@@ -43,9 +44,11 @@ app.set('views', __dirname + '/views')
 
 
 
-// app.get('/getCookie', (req,res) => {
-//     res.cookie
-// })
+// Variables de entorno
+
+console.log(process.env.DB_HOST);
+console.log(process.env.DB_USER);
+console.log(process.env.DB_PASS);
 
 
 app.post('/login', (req, res) => {
