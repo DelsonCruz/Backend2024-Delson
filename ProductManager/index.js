@@ -8,7 +8,12 @@ import loginRouter from './routes/loginRouter.js'
 import { Server } from 'socket.io'
 import { engine } from 'express-handlebars'
 import { __dirname } from './path.js'
-import { configDotenv } from 'dotenv'
+// import { configDotenv } from 'dotenv'
+// import { MongoTailableCursorError } from 'mongodb'
+import config from './config.js'
+import dotenv from 'dotenv'
+import { fork } from 'child_process'
+
 
 //Configuraciones o declaraciones
 const app = express();
@@ -25,9 +30,8 @@ loginRouter.listen(PORT, () => {
 
 const io = new Server(server)
 
-
+// Conexion con DataBase
 mongoose.connect("mongodb+srv://delsong91:<password>@cluster0.covmyfh.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
-
 
 .then(() => console.log("DB esta online"))
 .catch(e => console.log(e))
@@ -38,17 +42,57 @@ app.use(cookieParser())
 app.use('/', indexRouter);
 app.use(express.urlencoded({ extended: true }));
 
+
+
 app.engine('handlebars', engine())
 app.set('view engine', 'handlebars')
 app.set('views', __dirname + '/views')
+app.use(cookieParser(process.env.COOKIES_SECRET))
+
+
+app.use(session({
+    secret: "coderSecret",
+    resave: true,
+    store: MongoStore.create({
+        mongoUrl: "mongodb+srv://delsong91:<password>@cluster0.covmyfh.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
+        ttl: 60 * 60
+    }),
+    saveUnitialized: true
+}))
+
 
 
 
 // Variables de entorno
 
-console.log(process.env.DB_HOST);
-console.log(process.env.DB_USER);
-console.log(process.env.DB_PASS);
+dotenv.config();
+
+
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: true,
+    store: MongoStore.create({
+        mongoUrl: process.env.MONGO_DB_URL,
+        ttl: 60 * 60
+    }),
+    saveUnitialized: true
+}))
+
+app.get('/suma', (req, res) => {
+
+    // calcular y generar la cantidad de hilos de ejecucuion,
+    // hijos necesarios para esta operacion (automaticamente)
+
+    const child = fork ('./operaciones.js')
+    console.log(process.pid)
+    child.send("A trabajar")
+    child.on('message', resultado =>{
+
+        res.send (`El resultado final es: ${resultado}`)
+    })
+
+  
+})
 
 
 app.post('/login', (req, res) => {
