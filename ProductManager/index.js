@@ -1,40 +1,52 @@
-import express from 'express'
+// import express from 'express'
 import upload from './config/multer.js'
 import mongoose from 'mongoose'
+import dotenv from 'dotenv'
+import cors from 'cors'
+
 import messageModel from './models/messages.js'
 import indexRouter from './routes/indexRouter.js'
 import cookieParser from 'cookie-parser'
 import loginRouter from './routes/loginRouter.js'
+import config from './config/config.js'
+import productsRouter from './routes/productsRouter.js'
+import serverRouter from './server/serverRouter.js'
+
+
 import { Server } from 'socket.io'
 import { engine } from 'express-handlebars'
 import { __dirname } from './path.js'
+import { fork } from 'child_process'
 // import { configDotenv } from 'dotenv'
 // import { MongoTailableCursorError } from 'mongodb'
-import config from './config.js'
-import dotenv from 'dotenv'
-import { fork } from 'child_process'
+
+
+
+
 
 
 //Configuraciones o declaraciones
-const app = express();
-const PORT = 8000;
+// const app = express();
+// const PORT = 8000;
 
 //Server
-const server = app.listen(PORT, () => {
-    console.log(`Server on port ${PORT}`)
-})
+// const server = app.listen(PORT, () => {
+//     console.log(`Server on port ${PORT}`)
+// })
 
-loginRouter.listen(PORT, () => {
-    console.log(`Login on port ${PORT}`)
-});
+// loginRouter.listen(PORT, () => {
+//     console.log(`Login on port ${PORT}`)
+// });
 
-const io = new Server(server)
+
+
+// const io = new Server(server)
 
 // Conexion con DataBase
-mongoose.connect("mongodb+srv://delsong91:<password>@cluster0.covmyfh.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
+// mongoose.connect("mongodb+srv://delsong91:<password>@cluster0.covmyfh.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
 
-.then(() => console.log("DB esta online"))
-.catch(e => console.log(e))
+// .then(() => console.log("DB esta online"))
+// .catch(e => console.log(e))
 
 //Middlewares
 app.use(express.json())
@@ -43,22 +55,22 @@ app.use('/', indexRouter);
 app.use(express.urlencoded({ extended: true }));
 
 
-
+app.use('/api/products', productsRouter)
 app.engine('handlebars', engine())
 app.set('view engine', 'handlebars')
 app.set('views', __dirname + '/views')
 app.use(cookieParser(process.env.COOKIES_SECRET))
 
 
-app.use(session({
-    secret: "coderSecret",
-    resave: true,
-    store: MongoStore.create({
-        mongoUrl: "mongodb+srv://delsong91:<password>@cluster0.covmyfh.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
-        ttl: 60 * 60
-    }),
-    saveUnitialized: true
-}))
+// app.use(session({
+//     secret: "coderSecret",
+//     resave: true,
+//     store: MongoStore.create({
+//         mongoUrl: "mongodb+srv://delsong91:<password>@cluster0.covmyfh.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
+//         ttl: 60 * 60
+//     }),
+//     saveUnitialized: true
+// }))
 
 
 
@@ -68,15 +80,15 @@ app.use(session({
 dotenv.config();
 
 
-app.use(session({
-    secret: process.env.SESSION_SECRET,
-    resave: true,
-    store: MongoStore.create({
-        mongoUrl: process.env.MONGO_DB_URL,
-        ttl: 60 * 60
-    }),
-    saveUnitialized: true
-}))
+// app.use(session({
+//     secret: process.env.SESSION_SECRET,
+//     resave: true,
+//     store: MongoStore.create({
+//         mongoUrl: process.env.MONGO_DB_URL,
+//         ttl: 60 * 60
+//     }),
+//     saveUnitialized: true
+// }))
 
 app.get('/suma', (req, res) => {
 
@@ -139,25 +151,25 @@ app.get('/home', (req, res) => {
 
 
 
-io.on('connection', (socket) => {
-    console.log("Conexion con Socket.io")
+// io.on('connection', (socket) => {
+//     console.log("Conexion con Socket.io")
 
   
-    socket.on('mensaje', async (mensaje) => {
+//     socket.on('mensaje', async (mensaje) => {
   
-        try{
-            await messageModel.create(mensaje)
-            const mensajes = await messageModel.find()
-            io.emit('mensajeLogs', mensajes)
-        }catch(e){
-            io.emit('mensajeLogs', e)
-            //aca se envia cualquier mensaje, teniendo en cuenta que
-            // se debe enviar asi exista un error
-        }
+//         try{
+//             await messageModel.create(mensaje)
+//             const mensajes = await messageModel.find()
+//             io.emit('mensajeLogs', mensajes)
+//         }catch(e){
+//             io.emit('mensajeLogs', e)
+//             //aca se envia cualquier mensaje, teniendo en cuenta que
+//             // se debe enviar asi exista un error
+//         }
         
-    })
+//     })
 
-})
+// })
 
 
 

@@ -2,6 +2,7 @@ import cartRouter from './cartRouter.js'
 import productsRouter from './productsRouter.js'
 import userRouter from './userRouter.js'
 import chatRouter from './chatRouter.js'
+import sessionRouter from './sessionRouter.js'
 import upload from '../config/multer.js'
 import express from 'express'
 

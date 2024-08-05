@@ -1,11 +1,11 @@
 import express from 'express';
-import exphbs from 'express-handlebars';
+// import exphbs from 'express-handlebars';
 
 
 const loginRouter = express();
 const PORT = 8001;
 
-loginRouter.engine('handlebars', exphbs());
+// loginRouter.engine('handlebars', exphbs());
 loginRouter.set('view engine', 'handlebars');
 
 // Ruta para mostrar el formulario de login
