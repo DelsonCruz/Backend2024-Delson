@@ -24,7 +24,7 @@ app.use(cors(corsOptions))
 
 app.use('/api/products', productsRouter)
 
-mongoose.connect('mongodb+srv://delsong91:Cruzmongo92+@cluster0.covmyfh.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
+mongoose.connect('mongodb+srv://delsong91:<password>@cluster0.covmyfh.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
     .then(() => console.log("DB is connected"))
     .catch((e) => console.log(e))
 
