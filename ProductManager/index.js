@@ -203,6 +203,13 @@ app.get ('/mail', async (req, res) => {
                 // ID(alias) que debe tener el archivo
                 cid: 'cel1'
                 
+            ],
+            attachments:[
+                filename: 'cel1.jpg',
+                path: _dirname+ 'https://github.com/DelsonCruz/Backend2024-Delson/blob/main/ProductManager/public/img/cel1.jpg',
+                // ID(alias) que debe tener el archivo
+                cid: 'cel1'
+                
             ]
             
         })
