@@ -193,20 +193,20 @@ app.get ('/mail', async (req, res) => {
             html: `
                 <div>
                 <h1>
-                holA
+                holA, AdjuntO se EncuentrA tu FacturA
                 </h1>
                 </div>
                     `,
-            attachments:[]
+            attachments:[
+                filename: 'cel1.jpg',
+                path: _dirname+ 'https://github.com/DelsonCruz/Backend2024-Delson/blob/main/ProductManager/public/img/cel1.jpg',
+                // ID(alias) que debe tener el archivo
+                cid: 'cel1'
+                
+            ]
             
         })
         console.log(mail)
         res.status(200).send("Mail enviado")
 }) 
-
-
-
-
-
-
 
