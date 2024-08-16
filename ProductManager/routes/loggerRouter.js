@@ -14,8 +14,8 @@ const customLevelOpt = {
         error: 'orange',
         warning: 'yellow',
         info: 'blue',
-        http: 'white',
-        debug: 'cyan'
+        http: 'green',
+        debug: 'brown'
     }
 
 }
@@ -47,9 +47,12 @@ const logger = winston.createLogger({
             level: 'fatal',
             filename: './errors.log',
             format: winston.format.simple()
+        }),
+        new winston.transports.File({
+            level: 'debug',
+            filename: './debug.log',
+            format: winston.format.simple()
         })
-
-
     ]
 })
 
