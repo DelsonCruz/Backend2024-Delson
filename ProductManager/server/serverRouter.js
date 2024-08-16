@@ -1,37 +1,30 @@
-
 import express from 'express'
-import mongoose from 'mongoose'
-import productsRouter from './routes/products.router.js'
 import cors from 'cors'
 
-// const whiteList = ['http://127.0.0.1:5500']
-
-
-
 const app = express()
-const PORT = 8000
+const PORT = 4000
 
-//Permitir todas las rutas de ejecucion
-// app.use(cors())
+const whiteList = ['http://127.0.0.1:5500']
 
 const corsOptions = {
-    origin: 'http://127.0.0.1:5500',
-    // si alguno de los 'methods' se quita, debe mostrar error
-    methods: ['GET', 'POST', 'UPDATE', 'DELETE']
+    origin: (origin, callback) => {
+        console.log(origin)
+        if (!origin || whiteList.includes(origin)) {
+            callback(null, true)
+        } else {
+            callback(new Error("No autorizado por politicas de cors"))
+        }
+    }
 }
 
 app.use(cors(corsOptions))
 
-app.use('/api/products', productsRouter)
-
-mongoose.connect('mongodb+srv://delsong91:<password>@cluster0.covmyfh.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
-    .then(() => console.log("DB is connected"))
-    .catch((e) => console.log(e))
-
-// app.use('/api/products', productsRouter)
-
-app.listen(PORT, () => {
-    console.log(`Server on port ${PORT}`) 
+app.get('/saludo', (req, res) => {
+    res.status(200).send({ mensaje: "Hola desde mi servidor!" })
 })
 
-export default serverRouter
+app.listen(PORT, () => {
+    console.log(`Server on port ${PORT}`)
+})
+
+export default whiteList

@@ -3,9 +3,11 @@ import upload from './config/multer.js'
 import mongoose from 'mongoose'
 import messageModel from './models/messages.js'
 import indexRouter from './routes/indexRouter.js'
+import whiteList from './server/serverRouter.js'
 import cookieParser from 'cookie-parser'
 import loginRouter from './routes/loginRouter.js'
 import { Server } from 'socket.io'
+import { addLogger} from './routes/loggerRouter.js'
 import { engine } from 'express-handlebars'
 import { __dirname } from './path.js'
 // import { configDotenv } from 'dotenv'
@@ -16,8 +18,8 @@ import { fork } from 'child_process'
 
 
 //Configuraciones o declaraciones
-const app = express();
-const PORT = 8000;
+// const app = express();
+// const PORT = 8000;
 
 //Server
 const server = app.listen(PORT, () => {
@@ -40,6 +42,7 @@ mongoose.connect("mongodb+srv://delsong91:<password>@cluster0.covmyfh.mongodb.ne
 app.use(express.json())
 app.use(cookieParser())
 app.use('/', indexRouter);
+app.use('/', whiteList);
 app.use(express.urlencoded({ extended: true }));
 
 
@@ -80,7 +83,8 @@ app.use(session({
 
 app.get('/suma', (req, res) => {
 
-    
+    // calcular y generar la cantidad de hilos de ejecucuion,
+    // hijos necesarios para esta operacion (automaticamente)
 
     const child = fork ('./operaciones.js')
     console.log(process.pid)
@@ -99,10 +103,10 @@ app.post('/login', (req, res) => {
 
     // Aquí deberías verificar si el usuario y la contraseña son válidos
     if (username === 'usuario' && password === 'contraseña') {
-        
+        // Si la autenticación es exitosa, redirige a la página de inicio o a la página deseada
         res.redirect('/home.handlebars');
     } else {
-        
+        // Si la autenticación falla, muestra un mensaje de error o redirige de vuelta al formulario de login
         res.render('login', { error: 'Usuarios o contraseña inválidas' });
     }
 });
@@ -110,7 +114,7 @@ app.post('/login', (req, res) => {
 
 
 
-
+// Ruta para mostrar el formulario de registro
 app.get('/register', (req, res) => {
     res.render('register');
 });
@@ -119,10 +123,10 @@ app.get('/register', (req, res) => {
 app.post('/register', (req, res) => {
     const { username, password } = req.body;
 
-    
+    // Aquí creas el usuario en tu base de datos o en cualquier otra fuente de datos
     
     if (username === 'usuario' && password === 'contraseña') {
-        
+        // Si la autenticación es exitosa, redirige a la página de inicio o a la página deseada
         res.redirect('/home.handlebars');
     }else {
     res.redirect('/login'); // Redirigir al usuario al formulario de login despues de validar usuario
@@ -131,7 +135,7 @@ app.post('/register', (req, res) => {
 
 // Ruta para la página de inicio (home)
 app.get('/home', (req, res) => {
-    
+    // Renderizar la página home
     res.render('home');
 });
 
@@ -150,7 +154,8 @@ io.on('connection', (socket) => {
             io.emit('mensajeLogs', mensajes)
         }catch(e){
             io.emit('mensajeLogs', e)
-            
+            //aca se envia cualquier mensaje, teniendo en cuenta que
+            // se debe enviar asi exista un error
         }
         
     })
@@ -175,6 +180,8 @@ app.post('/upload', upload.single('product'), (req, res) => {
 
 const transport = nodemailer.createTransport({
     service: 'gmail',
+    // el puerto de servicio 485 tambien se puede 
+    // usar(pero usualmente se bloquea para usuarios estandar)
     port: 587,
     auth:{
         user: "nak.rock2@gmail.com",
@@ -193,27 +200,26 @@ app.get ('/mail', async (req, res) => {
             html: `
                 <div>
                 <h1>
-                holA, AdjuntO se EncuentrA tu FacturA
+                holA, bienvenido a nuestra APP
                 </h1>
                 </div>
                     `,
-            attachments:[
-                filename: 'cel1.jpg',
-                path: _dirname+ 'https://github.com/DelsonCruz/Backend2024-Delson/blob/main/ProductManager/public/img/cel1.jpg',
-                // ID(alias) que debe tener el archivo
-                cid: 'cel1'
-                
-            ],
-            attachments:[
-                filename: 'billing.pdf',
-                path: _dirname+ 'https://github.com/DelsonCruz/Backend2024-Delson/blob/main/ProductManager/public/files/billing.pdf',
-                // ID(alias) que debe tener el archivo
-                cid: 'billing'
-                
-            ]
-            
+            attachments:[]
+            // para adjuntar archivos debe subirlo al repository (recomendado)
+            // attachments:[{
+            // filename: 'imagen.jpg(archivo.pdf)',
+            // path: _dirname+ '/ruta/imagen.jpg',
+            // ID(alias) que debe tener el archivo
+            // cid: 'imagen'
+            // }]
         })
         console.log(mail)
         res.status(200).send("Mail enviado")
 }) 
+
+
+
+
+
+
 
