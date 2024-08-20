@@ -4,6 +4,7 @@ import userRouter from './userRouter.js'
 import chatRouter from './chatRouter.js'
 import upload from '../config/multer.js'
 import express from 'express'
+import { addLogger } from './loggerRouter.js'
 
 import { __dirname } from '../path.js'
 
@@ -20,11 +21,15 @@ indexRouter.use('/api/session', sessionRouter)
 
 indexRouter.post('/upload', upload.single('product'), (req, res) => {
     try {
-        console.log(req.file)
+        req.logger.info(req.file)
         res.status(200).send("Imagen cargada correctamente")
     } catch (e) {
-        res.status(500).send("Error al cargar imagen")
+        req.logger.error("Error al cargar imagen")
+        res.status(500).send(e)
     }
 })
 
+
 export default indexRouter
+
+

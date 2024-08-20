@@ -34,6 +34,16 @@ sessionRouter.post('/register', passport.authenticate('register'), async (req, r
     }
 })
 
+// sessionRouter.get('/github', passport.authenticate('github', { scope: ['user:email'] }), async (req, res) => { r })
+
+// sessionRouter.get('/githubSession', passport.authenticate('github'), async (req, res) => {
+//     console.log(req)
+//     req.session.user = {
+//         email: req.user.email,
+//         first_name: req.user.name
+//     }
+//     res.redirect('/')
+// })
 
 sessionRouter.get('/current', passport.authenticate('jwt'), (req, res) => {
     console.log(req)
@@ -43,7 +53,8 @@ sessionRouter.get('/current', passport.authenticate('jwt'), (req, res) => {
 sessionRouter.get('/logout', (req, res) => {
     req.session.destroy(function (e) {
         if (e) {
-            console.log(e)
+            req.logger.error(e)
+            res.status(500).send(e)
         } else {
             res.status(200).redirect("/")
         }

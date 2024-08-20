@@ -2,7 +2,7 @@ import express from 'express'
 import cors from 'cors'
 
 const app = express()
-const PORT = 4000
+// const PORT = 4000
 
 const whiteList = ['http://127.0.0.1:5500']
 
@@ -24,6 +24,7 @@ app.get('/saludo', (req, res) => {
 })
 
 app.listen(PORT, () => {
+    req.logger.info(`Server on port ${PORT}`)
     console.log(`Server on port ${PORT}`)
 })
 

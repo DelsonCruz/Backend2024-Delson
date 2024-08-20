@@ -1,16 +1,21 @@
 import { Router } from "express";
 import cartModel from "../models/cart.js";
+import { addLogger } from "./loggerRouter.js";
 
 const cartRouter = Router()
+app.use(addLogger)
 
 cartRouter.post('/', async (req, res) => {
     try {
         const mensaje = await cartModel.create({ products: [] })
         res.status(201).send(mensaje)
     } catch (e) {
-        res.status(500).send(`Error interno del servidor al crear carrito: ${e}`)
+        req.logger.error(`Error interno del servidor al crear carrito: ${e}`)
+        res.status(500).send(e)
     }
 })
+
+
 
 cartRouter.get('/:cid', async (req, res) => {
     try {
@@ -18,7 +23,8 @@ cartRouter.get('/:cid', async (req, res) => {
         const cart = await cartModel.findById(cartId)
         res.status(200).send(cart)
     } catch (e) {
-        res.status(500).send(`Error interno del servidor al consultar carrito: ${e}`)
+        req.logger.error(`Error interno del servidor al crear carrito: ${e}`)
+        res.status(500).send(e)
     }
 })
 
@@ -40,7 +46,8 @@ cartRouter.post('/:cid/:pid', async (req, res) => {
         const mensaje = await cartModel.findByIdAndUpdate(cartId, cart)
         res.status(200).send(mensaje)
     } catch (e) {
-        res.status(500).send(`Error interno del servidor al crear producto: ${e}`)
+        req.logger.error(`Error interno del servidor al crear producto: ${e}`)
+        res.status(500).send(e)
     }
 })
 
@@ -60,6 +67,8 @@ cartRouter.delete('/:cid/:pid', async (req, res) => {
             res.status(404).send(mensaje)
     } catch (e) {
         res.status(500).send(`Error interno del servidor al eliminar elemento: ${e}`)
+        req.logger.error(`Error interno del servidor al crear producto: ${e}`)
+        res.status(500).send(e)
     }
 })
 

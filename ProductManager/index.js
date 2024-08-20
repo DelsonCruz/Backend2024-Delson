@@ -44,8 +44,7 @@ app.use(cookieParser())
 app.use('/', indexRouter);
 app.use('/', whiteList);
 app.use(express.urlencoded({ extended: true }));
-
-
+app.use(addLogger)
 
 app.engine('handlebars', engine())
 app.set('view engine', 'handlebars')

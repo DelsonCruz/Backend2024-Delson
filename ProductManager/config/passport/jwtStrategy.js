@@ -3,6 +3,8 @@ import { userModel } from "../../../models/user.js";
 
 const cookieExtractor = req => {
     console.log(req.cookies)
+    //{} no hay cookies != esta cookie no existe
+    //Si existen cookies, asigno mi cookie en especifico
     const token = req.cookies ? req.cookies.jwtCookie : {}
     console.log(token)
     return token
@@ -10,6 +12,8 @@ const cookieExtractor = req => {
 
 const jwtOptions = {
     jwtFromRequest: ExtractJwt.fromExtractors([cookieExtractor]),
+    //jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken() esperar el token de JWT desde la peticion
+    //jwtFromRequest: ExtractJwt.fromExtractors([cookieExtractor]) consultando desde las cookies
     secretOrKey: process.env.JWT_SECRET
 }
 
