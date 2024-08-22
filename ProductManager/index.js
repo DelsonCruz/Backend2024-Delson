@@ -82,9 +82,6 @@ app.use(session({
 
 app.get('/suma', (req, res) => {
 
-    // calcular y generar la cantidad de hilos de ejecucuion,
-    // hijos necesarios para esta operacion (automaticamente)
-
     const child = fork ('./operaciones.js')
     console.log(process.pid)
     child.send("A trabajar")
@@ -109,8 +106,6 @@ app.post('/login', (req, res) => {
         res.render('login', { error: 'Usuarios o contraseña inválidas' });
     }
 });
-
-
 
 
 // Ruta para mostrar el formulario de registro
