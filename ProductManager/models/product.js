@@ -1,6 +1,3 @@
-// en la pagina de mongoose se puede verificar que tipo de datos se pueden ingresar
-// ejemplo: stock=number code=string
-
 import { Schema, model } from 'mongoose'
 
 const productSchema = new Schema({
