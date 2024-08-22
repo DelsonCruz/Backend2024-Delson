@@ -181,8 +181,8 @@ const transport = nodemailer.createTransport({
 app.get ('/mail', async (req, res) => {
 
         const mail = await transport.sendMail({
-            from: 'Test coder<nak.rock2@gmail.com>',
-            to: "nak.rock2@gmail.com",
+            from: 'Test coder<mail@mail.com>',
+            to: "mail@mail.com",
             subject: "Correo test",
             html: `
                 <div>
