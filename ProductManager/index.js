@@ -193,9 +193,9 @@ app.get ('/mail', async (req, res) => {
                     `,
             attachments:[]
             // para adjuntar archivos debe subirlo al repository (recomendado)
-            // attachments:[{
-            // filename: 'imagen.jpg(archivo.pdf)',
-            // path: _dirname+ '/ruta/imagen.jpg',
+            attachments:[{
+            filename: 'imagen.jpg(archivo.pdf)',
+            path: _dirname+ '/ruta/imagen.jpg',
             // ID(alias) que debe tener el archivo
             // cid: 'imagen'
             // }]
