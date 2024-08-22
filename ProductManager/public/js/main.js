@@ -2,6 +2,10 @@ const socket = io()
 
 const chatBox = document.getElementById('chatBox')
 const messageLogs = document.getElementById('messageLogs')
+const form = document.getElementById('chat-form');
+const input = document.getElementById('message-input');
+const messages = document.getElementById('messages');
+
 let user
 
 Swal.fire({
@@ -32,3 +36,20 @@ socket.on('mensajeLogs', info => {
         messageLogs.innerHTML += `<p>${mensaje.hora}hs. Usuario ${mensaje.usuario} dice: ${mensaje.mensaje}</p>`
     })
 })
+
+
+
+form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            if (input.value) {
+                socket.emit('chat message', input.value);
+                input.value = '';
+            }
+        });
+
+socket.on('chat message', function(msg) {
+            const li = document.createElement('li');
+            li.textContent = msg;
+            messages.appendChild(li);
+            window.scrollTo(0, document.body.scrollHeight);
+        });
