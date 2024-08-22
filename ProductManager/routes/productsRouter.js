@@ -1,11 +1,6 @@
 import { Router } from "express";
-// import { ProductManager } from '../config/ProductManager.js'
-// ya no se consulta el productManager, se consulta productModel
 import productModel from "../models/product.js";
 
-
-// ya no depende esta ruta './src/data/products.json', osea el TXT con los productos a consultar
-// const productManager = new ProductManager('./src/data/products.json')
 const productsRouter = Router()
 
 productsRouter.get('/', async (req, res) => {
@@ -15,11 +10,8 @@ productsRouter.get('/', async (req, res) => {
         const paginado = page != undefined ? page : 1;
         const limitante = limit != undefined ? limit :10;
         const ordenar = sort == 'asc' ? sort : 'desc';
-        
-
-        // ya no se consulta con get, y aca devuelve la coleccion de productos 
         const prods = await productModel.find()
-        // const prods = await productManager.getProducts()
+        
         let limite = parseInt(limit)
         if (!limite)
             limite = prods.length
@@ -37,13 +29,13 @@ productsRouter.get('/', async (req, res) => {
     }
 })
 
-//: significa que es modificable (puede ser un 4 como un 10 como un 75)
+
 productsRouter.get('/:pid', async (req, res) => {
     try {
         const idProducto = req.params.pid //Todo dato que se consulta desde un parametro es un string
-        // de igual modo ya no se usa el get, y aca devuelve el producto buscado
+        
         const prod = await productModel.findById(idProducto)
-        // const prod = await productManager.getProductById(idProducto)
+        
         if (prod)
             res.status(200).send(prod)
         else
