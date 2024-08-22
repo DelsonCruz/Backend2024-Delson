@@ -194,11 +194,14 @@ app.get ('/mail', async (req, res) => {
             attachments:[]
             // para adjuntar archivos debe subirlo al repository (recomendado)
             attachments:[{
-            filename: 'imagen.jpg(archivo.pdf)',
-            path: _dirname+ '/ruta/imagen.jpg',
+            // filename: 'imagen.jpg(archivo.pdf)',
+            filename: 'billing.pdf',
+            path: _dirname+ 'https://github.com/DelsonCruz/Backend2024-Delson/blob/main/ProductManager/public/files/billing.pdf',
             // ID(alias) que debe tener el archivo
-            // cid: 'imagen'
+            // cid: 'billing'
             // }]
+
+            // billing.pdf
         })
         console.log(mail)
         res.status(200).send("Mail enviado")
