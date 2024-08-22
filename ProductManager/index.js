@@ -203,7 +203,7 @@ app.get ('/mail', async (req, res) => {
 
             // billing.pdf
         })
-        console.log(mail)
+        req.logger.info(mail)
         res.status(200).send("Mail enviado")
 }) 
 
