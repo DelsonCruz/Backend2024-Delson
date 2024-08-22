@@ -17,10 +17,6 @@ import dotenv from 'dotenv'
 import { fork } from 'child_process'
 
 
-//Configuraciones o declaraciones
-// const app = express();
-// const PORT = 8000;
-
 //Server
 const server = app.listen(PORT, () => {
     console.log(`Server on port ${PORT}`)
@@ -155,9 +151,6 @@ io.on('connection', (socket) => {
     })
 
 })
-
-
-
 
 
 app.post('/upload', upload.single('product'), (req, res) => {
