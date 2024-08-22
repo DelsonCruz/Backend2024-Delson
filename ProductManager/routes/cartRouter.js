@@ -53,7 +53,6 @@ cartRouter.post('/:cid/:pid', async (req, res) => {
 
 
 cartRouter.delete('/:cid/:pid', async (req, res) => {
-    // const { cid, pid } = req.params;
     try {
         const cartId = req.params.cid
         // const { quantity } = req.body
