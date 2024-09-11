@@ -27,7 +27,7 @@ const server = app.listen(PORT, () => {
 const io = new Server(server)
 
 // Conexion con DataBase
-mongoose.connect("mongodb+srv://delsong91:Cruzmongo92+@cluster0.covmyfh.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
+mongoose.connect("mongodb+srv://delsong91:<password>@cluster0.covmyfh.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
 
 .then(() => console.log("DB esta online"))
 .catch(e => console.log(e))
