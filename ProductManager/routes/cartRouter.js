@@ -3,7 +3,7 @@ import cartModel from "../models/cart.js";
 import { addLogger } from "./loggerRouter.js";
 
 const cartRouter = Router()
-app.use(addLogger)
+// app.use(addLogger)
 
 cartRouter.post('/', async (req, res) => {
     try {

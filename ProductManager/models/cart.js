@@ -5,6 +5,8 @@ const cartSchema = new Schema({
         type: [
             {
                 id_prod: {
+                    // en este caso este dato es unico
+                    // asi con esto se evita referencias redundantes
                     type: Schema.Types.ObjectId,
                     required: true,
                     ref: 'products'

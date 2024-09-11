@@ -1,58 +1,21 @@
 import { Router } from "express";
 import passport from "passport";
+import { login, register, sessionGithub, logout, testJWT, changePassword} from "../controllers/sessionController.js";
 
 const sessionRouter = Router()
 
-sessionRouter.get('/login', passport.authenticate('login'), async (req, res) => {
-    try {
-        if (!req.user) {
-            return res.status(401).send("Usuario o contraseña no validos")
-        }
+sessionRouter.get('/login', passport.authenticate('login'), login)
 
-        req.session.user = {
-            email: req.user.email,
-            first_name: req.user.first_name
-        }
+sessionRouter.post('/register', passport.authenticate('register'), register)
 
-        res.status(200).send("Usuario logueado correctamente")
+sessionRouter.get('/github', passport.authenticate('github', { scope: ['user:email'] }), async (req, res) => { })
 
-    } catch (e) {
-        res.status(500).send("Error al loguear usuario")
-    }
-})
+sessionRouter.get('/githubSession', passport.authenticate('github'), sessionGithub)
 
-sessionRouter.post('/register', passport.authenticate('register'), async (req, res) => {
-    try {
-        if (!req.user) {
-            return res.status(400).send("Usuario ya existente en la aplicacion")
-        }
+sessionRouter.get('/logout', logout)
 
-        res.status(200).send("Usuario creado correctamente")
+sessionRouter.get('/testJWT', passport.authenticate('jwt', { session: false }), testJWT)
 
-    } catch (e) {
-        res.status(500).send("Error al registrar usuario")
-    }
-})
-
-sessionRouter.get('/current', passport.authenticate('jwt'), (req, res) => {
-    console.log(req)
-    res.status(200).send("Usuario logueado")
-})
-
-sessionRouter.get('/logout', (req, res) => {
-    req.session.destroy(function (e) {
-        if (e) {
-            req.logger.error(e)
-            res.status(500).send(e)
-        } else {
-            res.status(200).redirect("/")
-        }
-
-    })
-})
-
-sessionRouter.get('/testJWT', passport.authenticate('jwt', { session: false }), (req, res) => {
-    res.status(200).send(req.user)
-})
+sessionRouter.get('/changePassword,', passport.authenticate('jwt', { session: false }), changePassword)
 
 export default sessionRouter
